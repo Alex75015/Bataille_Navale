@@ -4,12 +4,12 @@ import ensta.model.Orientation;
 
 public abstract class AbstractShip {
     
-    private char label;
+    private String label;
     private String nom;
     private Orientation orientation;
     private int length;
 
-    public AbstractShip(char label, String nom, int length, Orientation orientation){
+    public AbstractShip(String label, String nom, int length, Orientation orientation){
         this.label = label;
         this.nom = nom;
         this.length = length;
@@ -17,12 +17,12 @@ public abstract class AbstractShip {
     }
 
 
-    public char getLabel() {
+    public String getLabel() {
         return label;
     }
 
 
-    public void setLabel(char label) {
+    public void setLabel(String label) {
         this.label = label;
     }
 

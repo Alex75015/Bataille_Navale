@@ -6,16 +6,16 @@ public class Coords {
     private int Y;
 
     public Coords(){
-        this(0,0);
+        this(1,1);
     }
 
     public Coords(int X, int Y){
-        this.X = X;
-        this.Y = Y;
+        this.X = X-1;
+        this.Y = Y-1;
     }
 
     public Coords(Coords coords){
-        this(coords.X, coords.Y);
+        this(coords.X+1, coords.Y+1);
     }
 
     public int getX(){

@@ -24,9 +24,24 @@ public class Tile {
 		    return "x";
         if(!this.isHit && this.ship==null)
             return ".";
+        if(this.ship != null)
+            return ship.getLabel();
         return ".";
         
 	} 
+
+    public void putShip(AbstractShip ship)
+    {
+        this.ship = ship;
+    }
+
+    public boolean hasShip()
+    {
+        if(this.ship != null){
+            return true;
+        }
+        return false;
+    }
 
 
 }

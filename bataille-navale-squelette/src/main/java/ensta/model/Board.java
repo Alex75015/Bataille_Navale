@@ -6,7 +6,8 @@ public class Board implements IBoard {
 
 	private static final int DEFAULT_SIZE = 10;
 	private int size;
-	private Tile[][] grid;
+	private Tile[][] gridShips;
+	private Tile[][] gridHits;
 	private String nom;
 	
 	public Board() {
@@ -16,10 +17,12 @@ public class Board implements IBoard {
 	public Board(String nom, int size) {
 		this.nom = nom;
 		this.size = size;
-		this.grid = new Tile [size][size];
+		this.gridShips = new Tile [size][size];
+		this.gridHits = new Tile [size][size];
 		for(int i = 0; i < this.size; i++){
 			for(int j = 0; j < this.size; j++){
-				this.grid[i][j] = new Tile();
+				this.gridShips[i][j] = new Tile();
+				this.gridHits[i][j] = new Tile();
 			}
 		}
 	}
@@ -27,10 +30,12 @@ public class Board implements IBoard {
 	public Board(String nom) {
 		this.nom = nom;
 		this.size = DEFAULT_SIZE;
-		this.grid = new Tile [size][size];
+		this.gridShips = new Tile [size][size];
+		this.gridHits = new Tile [size][size];
 		for(int i = 0; i < this.size; i++){
 			for(int j = 0; j < this.size; j++){
-				this.grid[i][j] = new Tile();
+				this.gridShips[i][j] = new Tile();
+				this.gridHits[i][j] = new Tile();
 			}
 		}
 	}
@@ -50,7 +55,7 @@ public class Board implements IBoard {
 		for(int j=aMajuscule; j<(aMajuscule + size);j++){
 			System.out.print((char) j + " ");
 		}
-		System.out.print(ecartEntreBoards);
+		System.out.print(" ".repeat(3));
 		System.out.print(longueurDecalageInitial);
 		for(int j=aMajuscule; j<(aMajuscule + size);j++){
 			System.out.print((char) j + " ");
@@ -59,13 +64,12 @@ public class Board implements IBoard {
 		for(int i=0; i<size;i++){
 			System.out.print(i+1 + " ".repeat(longueurDecaInitial-Integer.toString(i+1).length()));
 			for(int j=0; j<size;j++){
-				System.out.print(grid[i][j].toString() + " ");
+				System.out.print(gridShips[i][j].toString() + " ");
 			}
-			System.out.print(ecartEntreBoards);
-			System.out.print(longueurDecalageInitial);
+			System.out.print(" ".repeat(3));
 			System.out.print(i+1 + " ".repeat(longueurDecaInitial-Integer.toString(i+1).length()));
 			for(int j=0; j<size;j++){
-				System.out.print(grid[i][j].toString() + " ");
+				System.out.print(gridHits[i][j].toString() + " ");
 			}
 			System.out.println();
 		}
@@ -121,13 +125,37 @@ public class Board implements IBoard {
 
 	@Override
 	public boolean putShip(AbstractShip ship, ensta.model.Coords coords) {
-		// TODO Auto-generated method stub
-		return false;
+		Orientation o = ship.getOrientation();
+		int dx = 0, dy = 0;
+		if(canPutShip(ship, coords))
+		{
+			if (o == Orientation.EAST) {
+				dx = 1;
+			} else if (o == Orientation.SOUTH) {
+				dy = 1;
+			} else if (o == Orientation.NORTH) {
+				dy = -1;
+			} else if (o == Orientation.WEST) {
+				dx = -1;
+			}
+		
+			for (int i = 0; i < ship.getLength(); ++i) 
+			{
+				int x = coords.getX();
+				int y = coords.getY();
+				gridShips[y+dy*i][x+dx*i].putShip(ship);
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public boolean hasShip(ensta.model.Coords coords) {
-		// TODO Auto-generated method stub
+		int x = coords.getX();
+		int y = coords.getY();
+		if(gridShips[y][x].hasShip()){
+			return true;
+		}
 		return false;
 	}
 
