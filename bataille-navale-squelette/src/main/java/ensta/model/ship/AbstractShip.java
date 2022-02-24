@@ -8,6 +8,7 @@ public abstract class AbstractShip {
     private String nom;
     private Orientation orientation;
     private int length;
+    private int strikeCount;
 
     public AbstractShip(String label, String nom, int length, Orientation orientation){
         this.label = label;
@@ -44,12 +45,19 @@ public abstract class AbstractShip {
         return length;
     }
 
-    public boolean isSunk() {
-        return false;
+    public String getName() {
+        return this.nom;
     }
 
-    public Object getName() {
-        return this.nom;
+    public void addStrike(){
+        this.strikeCount++;
+    }
+
+    public boolean isSunk(){
+        if(this.strikeCount == this.length){
+            return true;
+        }
+        return false;
     }
     
 }

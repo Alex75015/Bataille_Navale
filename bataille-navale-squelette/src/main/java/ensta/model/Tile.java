@@ -1,28 +1,31 @@
 package ensta.model;
 
 import ensta.model.ship.AbstractShip;
+import ensta.util.ColorUtil;
 
 public class Tile {
-    private boolean isHit;
+    private Boolean struck;
     private AbstractShip ship;
     private Coords coords;
 
     public Tile(){
-        this.isHit = false;
+        this.struck = null;
         this.ship = null;
         this.coords = new Coords();
     }
 
-    public Tile(boolean isHit){
-        this.isHit = false;
+    public Tile(Boolean struck){
+        this.struck = null;
         this.ship = null;
         this.coords = new Coords();
     }
 
     public String toString(){ 
-        if(this.isHit)
+        if(this.struck == Boolean.FALSE)
 		    return "x";
-        if(!this.isHit && this.ship==null)
+        if(this.struck == Boolean.TRUE)
+		    return ColorUtil.colorize("x", ColorUtil.Color.RED);
+        if(this.struck == null && this.ship==null)
             return ".";
         if(this.ship != null)
             return ship.getLabel();
@@ -41,6 +44,14 @@ public class Tile {
             return true;
         }
         return false;
+    }
+
+    public void addStrike(){
+        struck = true;
+    }
+
+    public Boolean isStruck(){
+        return struck;
     }
 
 
