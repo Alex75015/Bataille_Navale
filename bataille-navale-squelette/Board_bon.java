@@ -36,34 +36,16 @@ public class Board implements IBoard {
 	}
 
 	public void print() {
-		int longueurDecaInitial = 2*Integer.toString(size).length();
-		String longueurDecalageInitial = " ".repeat(longueurDecaInitial);
-		String ecartEntreDeuxPositionsBoards = " ".repeat(longueurDecaInitial+size+4);
-		String ecartEntreBoards = " ".repeat(4);
-		System.out.println();
-		System.out.println("Board de "+this.nom+" :");
-		System.out.println();
-		System.out.println("Navires :" + ecartEntreDeuxPositionsBoards +"Frappes :");
+		System.out.println(this.nom + " :");
 		int aMajuscule = 65;
-		
-		System.out.print(longueurDecalageInitial);
-		for(int j=aMajuscule; j<(aMajuscule + size);j++){
-			System.out.print((char) j + " ");
-		}
-		System.out.print(ecartEntreBoards);
-		System.out.print(longueurDecalageInitial);
+		int longueurDecalageInitial = 2*Integer.toString(size).length();
+		System.out.print(" ".repeat(longueurDecalageInitial));
 		for(int j=aMajuscule; j<(aMajuscule + size);j++){
 			System.out.print((char) j + " ");
 		}
 		System.out.println("");
 		for(int i=0; i<size;i++){
-			System.out.print(i+1 + " ".repeat(longueurDecaInitial-Integer.toString(i+1).length()));
-			for(int j=0; j<size;j++){
-				System.out.print(grid[i][j].toString() + " ");
-			}
-			System.out.print(ecartEntreBoards);
-			System.out.print(longueurDecalageInitial);
-			System.out.print(i+1 + " ".repeat(longueurDecaInitial-Integer.toString(i+1).length()));
+			System.out.print(i+1 + " ".repeat(longueurDecalageInitial-Integer.toString(i+1).length()));
 			for(int j=0; j<size;j++){
 				System.out.print(grid[i][j].toString() + " ");
 			}
