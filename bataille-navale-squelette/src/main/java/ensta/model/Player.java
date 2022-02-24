@@ -45,6 +45,37 @@ public class Player {
 			// TODO set ship orientation
 			// TODO put ship at given position
 			// TODO when ship placement successful
+			
+			
+			boolean donePutShip = false;
+			do {
+
+				switch(res.orientation)
+				{
+					case "east":
+						ship.setOrientation(Orientation.EAST);
+						break;
+					case "south":
+						ship.setOrientation(Orientation.SOUTH);
+						break;
+					case "north":
+						ship.setOrientation(Orientation.NORTH);
+						break;
+					case "west":
+						ship.setOrientation(Orientation.WEST);
+						break;
+				}
+				
+				if (board.putShip(ship, new Coords(res.x+1,res.y))) 
+				{
+					donePutShip = true;
+				}
+				if (!donePutShip) {
+					System.err.println("Il y a déjà un bateau à cette position, veuillez en saisir une nouvelle !");
+					res = InputHelper.readShipInput();
+				}
+			} while (!donePutShip);
+			
 			++i;
 			done = i == 5;
 

@@ -27,13 +27,12 @@ public abstract class AbstractShip {
     }
 
 
-    public String getNom() {
-        return nom;
-    }
-
-
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
     }
 
 
@@ -50,7 +49,7 @@ public abstract class AbstractShip {
     }
 
     public Object getName() {
-        return null;
+        return this.nom;
     }
     
 }

@@ -129,14 +129,20 @@ public class Board implements IBoard {
 		int dx = 0, dy = 0;
 		if(canPutShip(ship, coords))
 		{
-			if (o == Orientation.EAST) {
-				dx = 1;
-			} else if (o == Orientation.SOUTH) {
-				dy = 1;
-			} else if (o == Orientation.NORTH) {
-				dy = -1;
-			} else if (o == Orientation.WEST) {
-				dx = -1;
+			switch(o)
+			{
+				case EAST:
+					dx = 1;
+					break;
+				case SOUTH:
+					dy = 1;
+					break;
+				case NORTH:
+					dy = -1;
+					break;
+				case WEST:
+					dx = -1;
+					break;
 			}
 		
 			for (int i = 0; i < ship.getLength(); ++i) 
@@ -145,8 +151,9 @@ public class Board implements IBoard {
 				int y = coords.getY();
 				gridShips[y+dy*i][x+dx*i].putShip(ship);
 			}
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
