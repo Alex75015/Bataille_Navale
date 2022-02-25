@@ -9,7 +9,7 @@ public class Carrier extends AbstractShip {
     }
     
     public Carrier(Orientation orientation){
-        super("C","Carrier",2,orientation);
+        super("C","Carrier",5,orientation);
     }
     
 }

@@ -59,5 +59,9 @@ public abstract class AbstractShip {
         }
         return false;
     }
+
+    public int getStrikeCount(){
+        return strikeCount;
+    }
     
 }

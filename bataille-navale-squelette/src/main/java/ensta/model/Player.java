@@ -36,6 +36,10 @@ public class Player {
 	public void putShips() {
 		boolean done = false;
 		int i = 0;
+		/* board.print(); */
+		System.out.println("--------------------------------------------------");
+		System.out.println(this.board.getNom() + " c'est à vous de placer vos bateaux !");
+		System.out.println();
 
 		do {
 			AbstractShip ship = ships[i];
@@ -65,38 +69,62 @@ public class Player {
 						ship.setOrientation(Orientation.WEST);
 						break;
 				}
-				
-				if (board.putShip(ship, new Coords(res.x+1,res.y))) 
-				{
-					donePutShip = true;
+				if(board.canPutShip(ship, new Coords(res.x+1,res.y))){
+					if (board.putShip(ship, new Coords(res.x+1,res.y))) 
+					{
+						donePutShip = true;
+					}
+					if (!donePutShip) {
+						System.err.println("Il y a déjà un bateau à cette position, veuillez en saisir une nouvelle !");
+						res = InputHelper.readShipInput();
+					}
 				}
-				if (!donePutShip) {
-					System.err.println("Il y a déjà un bateau à cette position, veuillez en saisir une nouvelle !");
+				else{
+					System.err.println("Les coordonnées du bateau doivent être comprises entre A1 et J10, veuillez réessayer !");
 					res = InputHelper.readShipInput();
 				}
 			} while (!donePutShip);
 			
 			++i;
-			done = i == 5;
+			done = i == 1; // valeur vaut 5 de base, à modifier
 
 			board.print();
 		} while (!done);
 	}
-
-	public Hit sendHit(Coords coords) {
+	// public Hit sendHit(Coords coords) { à la base c'était ça
+	public void sendHit() {
 		boolean done = false;
 		Hit hit = null;
 
 		do {
-			System.out.println("où frapper?");
+			System.out.println(this.board.getNom() + " c'est votre tour. Où voulez-vous frapper ?");
 			InputHelper.CoordInput hitInput = InputHelper.readCoordInput();
 			// TODO call sendHit on this.opponentBoard
+			int x = hitInput.x;
+			int y = hitInput.y;
 
+			if (board.isStruck(x, y) == null) 
+				{
+					hit = opponentBoard.sendHit(new Coords(x+1,y+1));
+					
+					if(hit == Hit.MISS){
+						board.setStruck(false, x , y);
+					}
+					else{
+						board.setStruck(true, x , y);
+					}
+					done = true;
+				}
+			else {
+				System.err.println("Vous avez déjà frappé à cette position, veuillez en saisir une nouvelle !");
+				/* hitInput = InputHelper.readCoordInput(); */
+			}
 			// TODO : Game expects sendHit to return BOTH hit result & hit coords.
 			// return hit is obvious. But how to return coords at the same time ?
 		} while (!done);
-
-		return hit;
+		board.print();
+		System.out.println(hit.toString());
+		System.out.println();
 	}
 
 	public AbstractShip[] getShips() {

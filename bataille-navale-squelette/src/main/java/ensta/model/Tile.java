@@ -21,14 +21,17 @@ public class Tile {
     }
 
     public String toString(){ 
+        
+        if(this.struck == null && this.ship==null)
+            return ".";
+        if(this.ship != null && this.struck == Boolean.TRUE)
+            return ColorUtil.colorize(ship.getLabel(), ColorUtil.Color.RED);
+        if(this.ship != null)
+            return ship.getLabel();
         if(this.struck == Boolean.FALSE)
 		    return "x";
         if(this.struck == Boolean.TRUE)
 		    return ColorUtil.colorize("x", ColorUtil.Color.RED);
-        if(this.struck == null && this.ship==null)
-            return ".";
-        if(this.ship != null)
-            return ship.getLabel();
         return ".";
         
 	} 
@@ -47,11 +50,31 @@ public class Tile {
     }
 
     public void addStrike(){
-        struck = true;
+        if(this.ship != null){
+            this.struck = Boolean.TRUE;
+            this.ship.addStrike();
+        }
     }
 
     public Boolean isStruck(){
         return struck;
+    }
+
+    public void setStruck(boolean struck){
+        if(struck){
+            this.struck = Boolean.TRUE;
+        }
+        else{
+            this.struck = Boolean.FALSE;
+        }
+    }
+
+    public Boolean isSunk(){
+        return ship.isSunk();
+    }
+
+    public int getStrikeCount(){
+        return ship.getStrikeCount();
     }
 
 

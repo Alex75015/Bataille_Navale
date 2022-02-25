@@ -74,14 +74,12 @@ public class Board implements IBoard {
 			System.out.println();
 		}
 		System.out.println();
-		/* System.out.println("print");
-		int i = 97;
-		System.out.println((char) i); */
 	}
 
 	public boolean canPutShip(AbstractShip ship, Coords coords) {
 		Orientation o = ship.getOrientation();
 		int dx = 0, dy = 0;
+
 		if (o == Orientation.EAST) {
 			if (coords.getX() + ship.getLength() >= this.size) {
 				return false;
@@ -160,6 +158,10 @@ public class Board implements IBoard {
 	public boolean hasShip(ensta.model.Coords coords) {
 		int x = coords.getX();
 		int y = coords.getY();
+		return hasShip(x,y);
+	}
+
+	public boolean hasShip(int x, int y) {
 		if(gridShips[y][x].hasShip()){
 			return true;
 		}
@@ -167,9 +169,15 @@ public class Board implements IBoard {
 	}
 
 	@Override
-	public void setHit(boolean hit, ensta.model.Coords coords) {
-		// TODO Auto-generated method stub
+	public void setHit(ensta.model.Coords coords) {
+		int x = coords.getX();
+		int y = coords.getY();
+		setHit(x, y);
 		
+	}
+
+	public void setHit(int x, int y) {
+		gridShips[y][x].addStrike();
 	}
 
 	@Override
@@ -180,8 +188,50 @@ public class Board implements IBoard {
 
 	@Override
 	public Hit sendHit(ensta.model.Coords res) {
+		int x = res.getX();
+		int y = res.getY();
+		return sendHit(x,y);
+	}
+
+	@Override
+	public Hit sendHit(int x, int y) {
+		setHit(x, y);
+		if(!hasShip(x, y)){
+			/* gridHits[y][x].setStruck(false); */
+			return Hit.MISS;
+		}
+		else if(gridShips[y][x].isSunk()){
+			/* gridHits[y][x].setStruck(true); */
+			return Hit.fromInt(gridShips[y][x].getStrikeCount());
+		}
+		else{
+/* 			gridHits[y][x].setStruck(true); */
+			return Hit.STRIKE;
+		}
+	}
+
+	@Override
+	public void setHit(boolean hit, Coords coords) {
 		// TODO Auto-generated method stub
-		return null;
+		
+	}
+
+	public Boolean isStruck(Coords coords){
+		int x = coords.getX();
+		int y = coords.getY();
+		return isStruck(x, y);
+	}
+
+	public Boolean isStruck(int x, int y){
+		return gridHits[y][x].isStruck();
+	}
+
+	public String getNom(){
+		return this.nom;
+	}
+
+	public void setStruck(boolean struck, int x, int y){
+		this.gridHits[y][x].setStruck(struck);
 	}
 
 }

@@ -30,6 +30,8 @@ public interface IBoard {
      * @param hit true if the hit must be set to successful
      * @param coords
      */
+    public void setHit(Coords coords);
+
     public void setHit(boolean hit, Coords coords);
 
     /**
@@ -42,4 +44,13 @@ public interface IBoard {
 	public Hit sendHit(Coords res);
 
 	public boolean canPutShip(AbstractShip ship, Coords coords);
+
+    /**
+     * Sends a hit at the given position
+     * @param x
+     * @param y
+     * @return status for the hit (eg : strike or miss)
+     */
+    Hit sendHit(int x, int y);
+
 }
