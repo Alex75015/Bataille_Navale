@@ -62,13 +62,16 @@ public class BattleShipsAI implements Serializable {
 	public void putShips(AbstractShip ships[]) {
 		Coords coords = new Coords(); // de base : Coords coords;
 		Orientation orientation;
-		Orientation[] orientations = Orientation.values();
+		int size = board.getSize();
 
 		for (AbstractShip ship : ships) {
 			do {
-				// TODO use Random to pick a random x, y & orientation
+				coords = Coords.randomCoords(size);
+				orientation = Orientation.randomOrientation();
+				ship.setOrientation(orientation);
 			} while (!board.canPutShip(ship, coords));
 			board.putShip(ship, coords);
+			board.print();
 		}
 	}
 
@@ -132,9 +135,8 @@ public class BattleShipsAI implements Serializable {
 	 */
 
 	private boolean guessOrientation(Coords lastStrike2, Coords res) {
-		return lastStrike2.getX() == res.getY();
+		return lastStrike2.getY() == res.getX();
 	}
-
 	private boolean isUndiscovered(Coords coords) {
 		return coords.isInBoard(board.getSize()) && board.getHit(coords) == null;
 	}
@@ -158,7 +160,7 @@ public class BattleShipsAI implements Serializable {
 		int y = lastStrike.getY();
 
 		for (int iy : new int[] { y - 1, y + 1 }) {
-			Coords coords = new Coords(x, iy);
+			Coords coords = new Coords(x+1, iy+1);
 			if (isUndiscovered(coords)) {
 				return coords;
 			}
@@ -176,7 +178,7 @@ public class BattleShipsAI implements Serializable {
 		int y = lastStrike.getY();
 
 		for (int ix : new int[] { x - 1, x + 1 }) {
-			Coords coords = new Coords(ix, y);
+			Coords coords = new Coords(ix+1, y+1);
 			if (isUndiscovered(coords)) {
 				return coords;
 			}

@@ -53,4 +53,12 @@ public interface IBoard {
      */
     Hit sendHit(int x, int y);
 
+    public void print();
+
+    public String getNom();
+
+    public Object isStruck(int x, int y);
+
+    public void setStruck(boolean b, int x, int y);
+
 }

@@ -1,6 +1,5 @@
 package ensta.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import ensta.model.ship.AbstractShip;

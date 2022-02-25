@@ -44,7 +44,6 @@ public class Board implements IBoard {
 		int longueurDecaInitial = 2*Integer.toString(size).length();
 		String longueurDecalageInitial = " ".repeat(longueurDecaInitial);
 		String ecartEntreDeuxPositionsBoards = " ".repeat(longueurDecaInitial+size+4);
-		String ecartEntreBoards = " ".repeat(4);
 		System.out.println();
 		System.out.println("Board de "+this.nom+" :");
 		System.out.println();
@@ -117,8 +116,7 @@ public class Board implements IBoard {
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.size;
 	}
 
 	@Override
@@ -182,8 +180,7 @@ public class Board implements IBoard {
 
 	@Override
 	public Boolean getHit(ensta.model.Coords coords) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.gridHits[coords.getY()][coords.getX()].isStruck();
 	}
 
 	@Override
@@ -213,6 +210,7 @@ public class Board implements IBoard {
 	@Override
 	public void setHit(boolean hit, Coords coords) {
 		// TODO Auto-generated method stub
+		this.gridHits[coords.getY()][coords.getX()].setStruck(hit);
 		
 	}
 
@@ -232,6 +230,10 @@ public class Board implements IBoard {
 
 	public void setStruck(boolean struck, int x, int y){
 		this.gridHits[y][x].setStruck(struck);
+	}
+
+	public Boolean isSunk(Coords coords){
+		return this.gridShips[coords.getY()][coords.getX()].isSunk();
 	}
 
 }

@@ -3,10 +3,7 @@ package ensta;
 import java.util.ArrayList;
 import java.util.List;
 
-import ensta.controller.Game;
 import ensta.model.Board;
-import ensta.model.Coords;
-import ensta.model.Orientation;
 import ensta.model.Player;
 import ensta.model.ship.AbstractShip;
 import ensta.model.ship.BattleShip;
@@ -17,6 +14,9 @@ import ensta.model.ship.Submarine;
 public class TestBoard {
     public static void main(String args[]) 
     {
+
+        // PARTIE 1 
+        
         /* Board board1 = new Board("Alexis");
         Board board2 = new Board("Marcelo");
         board1.print();
@@ -38,5 +38,26 @@ public class TestBoard {
         ships.add(new Carrier());
         Player Alexis = new Player(board1, board2, ships);
         Alexis.putShips(); */
+
+        // PARTIE 2
+
+        Board board1 = new Board("Alexis");
+        Board board2 = new Board("Marcelo");
+
+        List<AbstractShip> ships = new ArrayList<AbstractShip>();
+        ships.add(new Destroyer());
+        ships.add(new Submarine());
+        ships.add(new Submarine());
+        ships.add(new BattleShip());
+        ships.add(new Carrier());
+        
+        Player Alexis = new Player(board1, board2, ships);
+        Player Marcelo = new Player(board2,board1,ships);
+        Alexis.putShips();
+        Marcelo.putShips();
+        Alexis.sendHit();
+        Marcelo.sendHit();
+        Alexis.sendHit();
+        Marcelo.sendHit();
     }
 }

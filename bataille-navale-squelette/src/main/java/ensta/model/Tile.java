@@ -6,18 +6,16 @@ import ensta.util.ColorUtil;
 public class Tile {
     private Boolean struck;
     private AbstractShip ship;
-    private Coords coords;
+
 
     public Tile(){
         this.struck = null;
         this.ship = null;
-        this.coords = new Coords();
     }
 
     public Tile(Boolean struck){
         this.struck = null;
         this.ship = null;
-        this.coords = new Coords();
     }
 
     public String toString(){ 
