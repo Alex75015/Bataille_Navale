@@ -123,6 +123,91 @@ public class Game {
 		sin.close();
 	}
 
+	public Game initMultijoueur() {
+		if (!loadSave()) {
+			System.out.println("Quel est le nom du joueur 1 : ");
+            sin = new Scanner(System.in);
+			String board_name = sin.nextLine();
+
+			System.out.println("Quel est le nom du joueur 2 : ");
+            sin = new Scanner(System.in);
+			String board_name2 = sin.nextLine();
+
+			System.out.println("Quelle taille de tableau souhaitez-vous : ");
+            int size = sin.nextInt();
+
+			/* Scanner sin2 = new Scanner(System.in);
+			System.out.println("Désirez-vous voir le jeu de votre adversaire? (O/N) : ");
+            String view = sin2.nextLine(); */
+
+/* 			if(view.equals("O"))
+				viewAiBoard = true;
+			else viewAiBoard = false; */
+
+            Board p1_board = new Board(board_name, size);
+            Board p2_board = new Board(board_name2, size);
+
+            List<AbstractShip> p1_ships = createDefaultShips();
+            List<AbstractShip> p2_ships = createDefaultShips();
+
+            this.player1 = new Player(p1_board, p2_board, p1_ships);
+            this.player2 = new Player(p2_board, p1_board, p2_ships);
+
+            p1_board.print();
+            player1.putShips();
+
+			p2_board.print();
+            player2.putShips();
+		}
+		return this;
+	}
+
+	public void runMultijoueur() {
+		Coords coords = new Coords();
+		Board b1 = player1.getBoard();
+		Board b2 = player2.getBoard();
+		Hit hit;
+
+		// main loop
+		boolean done;
+		do {
+			hit = player1.sendHit(coords); // player1 send a hit
+			boolean strike = hit != Hit.MISS; // TODO set this hit on his board (b1)
+
+			done = updateScore();
+			System.out.println(makeHitMessage(false /* outgoing hit */, coords, hit));
+			System.out.println();
+			//b1.print();
+
+			// save();
+
+			if (!done && !strike) {
+				do {
+					hit = player2.sendHit(coords); // player2 send a hit.
+
+					strike = hit != Hit.MISS;
+					if (strike) {
+						b1.print();
+					}
+					System.out.println(makeHitMessage(true /* incoming hit */, coords, hit));
+					System.out.println();
+					done = updateScore();
+					/* if(viewAiBoard) b2.print(); */
+
+					if (!done) {
+//						save();
+					}
+				} while (strike && !done);
+			}
+
+		} while (!done);
+
+		SAVE_FILE.delete();
+		System.out.println(String.format("Le joueur %d gagne", player1.isLose() ? 2 : 1));
+		System.out.println();
+		sin.close();
+	}
+
 	private void save() {
 //		try {
 //			// TODO bonus 2 : uncomment

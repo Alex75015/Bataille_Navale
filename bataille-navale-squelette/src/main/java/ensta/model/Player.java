@@ -74,13 +74,13 @@ public class Player {
 							board.putShip(ship, coords);
 							donePutShip = true;
 					}
-					else if (board.hasShip(coords)) {
-							System.err.println("Il y a déjà un bateau à cette position, veuillez en saisir une nouvelle !");
-							res = InputHelper.readShipInput();
-					}
-					else{
+					else if(board.isOut(ship, coords)){
 						System.err.println("Le bateau sera hors de la grille, veuillez saisir une nouvelle position !");
 						res = InputHelper.readShipInput();
+					}
+					else { // (board.hasShip(ship, coords))
+							System.err.println("Il y a déjà un bateau à cette position, veuillez en saisir une nouvelle !");
+							res = InputHelper.readShipInput();
 					}
 				}
 				else{

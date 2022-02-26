@@ -80,12 +80,12 @@ public class Board implements IBoard {
 		int dx = 0, dy = 0;
 
 		if (o == Orientation.EAST) {
-			if (coords.getX() + ship.getLength() >= this.size) {
+			if (coords.getX() - 1 + ship.getLength() >= this.size) {
 				return false;
 			}
 			dx = 1;
 		} else if (o == Orientation.SOUTH) {
-			if (coords.getY() + ship.getLength() >= this.size) {
+			if (coords.getY() - 1 + ship.getLength() >= this.size) {
 				return false;
 			}
 			dy = 1;
@@ -165,6 +165,68 @@ public class Board implements IBoard {
 		}
 		return false;
 	}
+
+	public boolean hasShip(AbstractShip ship, Coords coords) {
+			Orientation o = ship.getOrientation();
+			int dx = 0, dy = 0;
+			switch(o){
+				case EAST :
+					dx = 1;
+					break;
+				case SOUTH :
+					dy = 1;
+					break;
+				case NORTH :
+					dy = -1;
+					break;
+				case WEST :
+					dx = -1;
+					break;
+			}
+	
+			Coords iCoords = new Coords(coords);
+	
+			for (int i = 0; i < ship.getLength(); ++i) {
+				if (this.hasShip(iCoords)) {
+					return true;
+				}
+				iCoords.setX(iCoords.getX() + dx);
+				iCoords.setY(iCoords.getY() + dy);
+			}
+	
+			return false;
+	}
+
+	public boolean isOut(AbstractShip ship, Coords coords) {
+		Orientation o = ship.getOrientation();
+		int dx = 0, dy = 0;
+		switch(o){
+			case EAST :
+				dx = 1;
+				break;
+			case SOUTH :
+				dy = 1;
+				break;
+			case NORTH :
+				dy = -1;
+				break;
+			case WEST :
+				dx = -1;
+				break;
+		}
+
+		Coords iCoords = new Coords(coords);
+
+		for (int i = 0; i < ship.getLength(); ++i) {
+			if (!iCoords.isInBoard(size)) {
+				return true;
+			}
+			iCoords.setX(iCoords.getX() + dx);
+			iCoords.setY(iCoords.getY() + dy);
+		}
+
+		return false;
+}
 
 	@Override
 	public void setHit(ensta.model.Coords coords) {
