@@ -1,7 +1,11 @@
 package ensta.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -179,7 +183,7 @@ public class Game {
 			System.out.println();
 			//b1.print();
 
-			// save();
+			save();
 
 			if (!done && !strike) {
 				do {
@@ -195,7 +199,7 @@ public class Game {
 					/* if(viewAiBoard) b2.print(); */
 
 					if (!done) {
-//						save();
+						save();
 					}
 				} while (strike && !done);
 			}
@@ -209,29 +213,41 @@ public class Game {
 	}
 
 	private void save() {
-//		try {
-//			// TODO bonus 2 : uncomment
-//			// if (!SAVE_FILE.exists()) {
-//			// SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
-//			// }
-//
-//			// TODO bonus 2 : serialize players
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		/* try {
+			if (!SAVE_FILE.exists()) {
+				SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
+			}
+
+			FileOutputStream fos = new FileOutputStream(SAVE_FILE);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(player1);
+			oos.writeObject(player2);
+
+			oos.close();
+			fos.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} */
 	}
 
 	private boolean loadSave() {
-//		if (SAVE_FILE.exists()) {
-//			try {
-//				// TODO bonus 2 : deserialize players
-//
-//				return true;
-//			} catch (IOException | ClassNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		/* if (SAVE_FILE.exists()) {
+			try {
+				FileInputStream fis = new FileInputStream(SAVE_FILE);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+
+				player1 = (Player) ois.readObject();
+				player2 = (Player) ois.readObject();
+
+				ois.close();
+				fis.close();
+
+				return true;
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} */
 		return false;
 	}
 

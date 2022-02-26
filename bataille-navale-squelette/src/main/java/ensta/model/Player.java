@@ -90,7 +90,7 @@ public class Player {
 			} while (!donePutShip);
 			
 			++i;
-			done = i == 5;
+			done = i == 1;
 
 			board.print();
 		} while (!done);
