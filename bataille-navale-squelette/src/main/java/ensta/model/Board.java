@@ -228,6 +228,12 @@ public class Board implements IBoard {
 		return this.nom;
 	}
 
+	public void setStruck(boolean struck, Coords coords){
+		int x = coords.getX();
+		int y = coords.getY();
+		this.setStruck(struck, x, y);
+	}
+
 	public void setStruck(boolean struck, int x, int y){
 		this.gridHits[y][x].setStruck(struck);
 	}

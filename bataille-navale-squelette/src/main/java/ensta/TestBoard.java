@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ensta.model.Board;
+import ensta.model.Coords;
 import ensta.model.Player;
 import ensta.model.ship.AbstractShip;
 import ensta.model.ship.BattleShip;
@@ -50,14 +51,16 @@ public class TestBoard {
         ships.add(new Submarine());
         ships.add(new BattleShip());
         ships.add(new Carrier());
+
+        Coords coords = new Coords();
         
         Player Alexis = new Player(board1, board2, ships);
         Player Marcelo = new Player(board2,board1,ships);
         Alexis.putShips();
         Marcelo.putShips();
-        Alexis.sendHit();
-        Marcelo.sendHit();
-        Alexis.sendHit();
-        Marcelo.sendHit();
+        Alexis.sendHit(coords);
+        Marcelo.sendHit(coords);
+        Alexis.sendHit(coords);
+        Marcelo.sendHit(coords);
     }
 }

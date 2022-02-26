@@ -68,13 +68,18 @@ public class Player {
 						ship.setOrientation(Orientation.WEST);
 						break;
 				}
-				if(board.canPutShip(ship, new Coords(res.x+1,res.y))){
-					if (board.putShip(ship, new Coords(res.x+1,res.y))) 
-					{
-						donePutShip = true;
+				Coords coords = new Coords(res.x+1,res.y);
+				if(coords.isInBoard(board.getSize())){
+					if(board.canPutShip(ship, coords)){
+							board.putShip(ship, coords);
+							donePutShip = true;
 					}
-					if (!donePutShip) {
-						System.err.println("Il y a déjà un bateau à cette position, veuillez en saisir une nouvelle !");
+					else if (board.hasShip(coords)) {
+							System.err.println("Il y a déjà un bateau à cette position, veuillez en saisir une nouvelle !");
+							res = InputHelper.readShipInput();
+					}
+					else{
+						System.err.println("Le bateau sera hors de la grille, veuillez saisir une nouvelle position !");
 						res = InputHelper.readShipInput();
 					}
 				}
@@ -85,45 +90,52 @@ public class Player {
 			} while (!donePutShip);
 			
 			++i;
-			done = i == 1; // valeur vaut 5 de base, à modifier
+			done = i == 5;
 
 			board.print();
 		} while (!done);
 	}
 	// public Hit sendHit(Coords coords) { à la base c'était ça
-	public void sendHit() {
+	public Hit sendHit(Coords coords) {
 		boolean done = false;
 		Hit hit = null;
+		System.out.println(this.board.getNom() + " c'est votre tour. Où voulez-vous frapper ?");
 
 		do {
-			System.out.println(this.board.getNom() + " c'est votre tour. Où voulez-vous frapper ?");
+
 			InputHelper.CoordInput hitInput = InputHelper.readCoordInput();
 			// TODO call sendHit on this.opponentBoard
-			int x = hitInput.x;
-			int y = hitInput.y;
+			coords.setX(hitInput.x);
+			coords.setY(hitInput.y);
 
-			if (board.isStruck(x, y) == null) 
-				{
-					hit = opponentBoard.sendHit(new Coords(x+1,y+1));
-					
-					if(hit == Hit.MISS){
-						board.setStruck(false, x , y);
+			if(coords.isInBoard(board.getSize())){
+				if (board.isStruck(coords) == null) 
+					{
+						hit = opponentBoard.sendHit(new Coords(coords.getX()+1,coords.getY()+1));
+						
+						if(hit == Hit.MISS){
+							board.setStruck(false, coords);
+						}
+						else{
+							board.setStruck(true, coords);
+						}
+						done = true;
 					}
-					else{
-						board.setStruck(true, x , y);
-					}
-					done = true;
+				else {
+					System.err.println("Vous avez déjà frappé à cette position, veuillez en saisir une nouvelle !");
+					/* hitInput = InputHelper.readCoordInput(); */
 				}
-			else {
-				System.err.println("Vous avez déjà frappé à cette position, veuillez en saisir une nouvelle !");
-				/* hitInput = InputHelper.readCoordInput(); */
+				// TODO : Game expects sendHit to return BOTH hit result & hit coords.
+				// return hit is obvious. But how to return coords at the same time ?
 			}
-			// TODO : Game expects sendHit to return BOTH hit result & hit coords.
-			// return hit is obvious. But how to return coords at the same time ?
+			else{
+				System.err.println("Les coordonnées de la frappe doivent être comprises entre A1 et J10, veuillez réessayer !");
+			}
 		} while (!done);
 		board.print();
-		System.out.println(hit.toString());
+		/* System.out.println(hit.toString()); */
 		System.out.println();
+		return hit;
 	}
 
 	public AbstractShip[] getShips() {

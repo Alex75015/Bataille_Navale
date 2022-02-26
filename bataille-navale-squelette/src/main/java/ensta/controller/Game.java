@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import ensta.ai.PlayerAI;
 import ensta.model.Board;
 import ensta.model.Coords;
 import ensta.model.Hit;
@@ -30,6 +31,7 @@ public class Game {
 	private Player player1;
 	private Player player2;
 	private Scanner sin;
+	private boolean viewAiBoard;
 
 	/*
 	 * *** Constructeurs
@@ -39,16 +41,35 @@ public class Game {
 
 	public Game init() {
 		if (!loadSave()) {
+			System.out.println("Quel est votre nom : ");
+            sin = new Scanner(System.in);
+			String board_name = sin.nextLine();
 
+			System.out.println("Quelle taille de tableau souhaitez-vous : ");
+            int size = sin.nextInt();
 
-			// TODO init boards
-			Board board1 = new Board();
-			Board board2 = new Board();
-			board1.print();
+			Scanner sin2 = new Scanner(System.in);
+			System.out.println("Désirez-vous voir le jeu de votre adversaire? (O/N) : ");
+            String view = sin2.nextLine();
 
-			// TODO init this.player1 & this.player2
+			if(view.equals("O"))
+				viewAiBoard = true;
+			else viewAiBoard = false;
 
-			// TODO place player ships
+            Board p1_board = new Board(board_name, size);
+            Board p2_board = new Board("AI", size);
+
+            List<AbstractShip> p1_ships = createDefaultShips();
+            List<AbstractShip> p2_ships = createDefaultShips();
+
+            this.player1 = new Player(p1_board, p2_board, p1_ships);
+            this.player2 = new PlayerAI(p2_board, p1_board, p2_ships);
+
+            p1_board.print();
+
+            player1.putShips();
+            player2.putShips();
+			if(viewAiBoard) p2_board.print();
 		}
 		return this;
 	}
@@ -59,31 +80,34 @@ public class Game {
 	public void run() {
 		Coords coords = new Coords();
 		Board b1 = player1.getBoard();
+		Board b2 = player2.getBoard();
 		Hit hit;
 
 		// main loop
-		b1.print();
 		boolean done;
 		do {
-			hit = Hit.MISS; // TODO player1 send a hit
+			hit = player1.sendHit(coords); // player1 send a hit
 			boolean strike = hit != Hit.MISS; // TODO set this hit on his board (b1)
 
 			done = updateScore();
-			b1.print();
 			System.out.println(makeHitMessage(false /* outgoing hit */, coords, hit));
+			System.out.println();
+			//b1.print();
 
 			// save();
 
 			if (!done && !strike) {
 				do {
-					hit = Hit.MISS; // TODO player2 send a hit.
+					hit = player2.sendHit(coords); // player2 send a hit.
 
 					strike = hit != Hit.MISS;
 					if (strike) {
 						b1.print();
 					}
 					System.out.println(makeHitMessage(true /* incoming hit */, coords, hit));
+					System.out.println();
 					done = updateScore();
+					if(viewAiBoard) b2.print();
 
 					if (!done) {
 //						save();
@@ -94,7 +118,8 @@ public class Game {
 		} while (!done);
 
 		SAVE_FILE.delete();
-		System.out.println(String.format("joueur %d gagne", player1.isLose() ? 2 : 1));
+		System.out.println(String.format("Le joueur %d gagne", player1.isLose() ? 2 : 1));
+		System.out.println();
 		sin.close();
 	}
 

@@ -71,7 +71,7 @@ public class BattleShipsAI implements Serializable {
 				ship.setOrientation(orientation);
 			} while (!board.canPutShip(ship, coords));
 			board.putShip(ship, coords);
-			board.print();
+			
 		}
 	}
 
