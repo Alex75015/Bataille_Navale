@@ -98,7 +98,7 @@ public class Game {
 			System.out.println();
 			//b1.print();
 
-			// save();
+			 save();
 
 			if (!done && !strike) {
 				do {
@@ -114,7 +114,7 @@ public class Game {
 					if(viewAiBoard) b2.print();
 
 					if (!done) {
-//						save();
+						save();
 					}
 				} while (strike && !done);
 			}
@@ -213,7 +213,7 @@ public class Game {
 	}
 
 	private void save() {
-		/* try {
+		try {
 			if (!SAVE_FILE.exists()) {
 				SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
 			}
@@ -228,11 +228,11 @@ public class Game {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-		} */
+		}
 	}
 
 	private boolean loadSave() {
-		/* if (SAVE_FILE.exists()) {
+		if (SAVE_FILE.exists()) {
 			try {
 				FileInputStream fis = new FileInputStream(SAVE_FILE);
 				ObjectInputStream ois = new ObjectInputStream(fis);
@@ -247,7 +247,7 @@ public class Game {
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-		} */
+		}
 		return false;
 	}
 
